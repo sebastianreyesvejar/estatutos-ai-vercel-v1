@@ -1,16 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
-  --font-sans: "Space Grotesk", sans-serif;
-  --font-mono: "Space Mono", monospace;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --font-sans: "Poppins", sans-serif;
+  --font-display: "Nunito", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -50,42 +49,54 @@
 }
 
 :root {
-  --radius: 0px;
-  --primary: oklch(0.95 0 0);
-  --primary-foreground: oklch(0.10 0 0);
-  --background: oklch(0.12 0 0);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.16 0 0);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.14 0 0);
-  --popover-foreground: oklch(0.95 0 0);
-  --secondary: oklch(0.22 0 0);
-  --secondary-foreground: oklch(0.85 0 0);
-  --muted: oklch(0.20 0 0);
-  --muted-foreground: oklch(0.55 0 0);
-  --accent: oklch(0.28 0 0);
-  --accent-foreground: oklch(0.95 0 0);
-  --destructive: oklch(0.55 0.18 25);
-  --destructive-foreground: oklch(0.95 0 0);
-  --border: oklch(0.25 0 0);
-  --input: oklch(0.20 0 0);
-  --ring: oklch(0.60 0 0);
-  --chart-1: oklch(0.85 0 0);
-  --chart-2: oklch(0.65 0 0);
-  --chart-3: oklch(0.45 0 0);
-  --chart-4: oklch(0.35 0 0);
-  --chart-5: oklch(0.25 0 0);
-  --sidebar: oklch(0.10 0 0);
-  --sidebar-foreground: oklch(0.85 0 0);
-  --sidebar-primary: oklch(0.95 0 0);
-  --sidebar-primary-foreground: oklch(0.10 0 0);
-  --sidebar-accent: oklch(0.18 0 0);
-  --sidebar-accent-foreground: oklch(0.85 0 0);
-  --sidebar-border: oklch(0.20 0 0);
-  --sidebar-ring: oklch(0.60 0 0);
-}
+  --radius: 16px;
 
-/* Dark mode same as default - brutalista is always dark */
+  /* ── Evolutio palette ── */
+  --orange:        oklch(0.68 0.19 40);
+  --orange-dark:   oklch(0.60 0.19 40);
+  --orange-light:  oklch(0.92 0.06 40);
+  --teal:          oklch(0.68 0.13 210);
+  --teal-dark:     oklch(0.55 0.13 210);
+  --teal-light:    oklch(0.95 0.04 210);
+  --navy:          oklch(0.18 0.06 270);
+  --navy-mid:      oklch(0.38 0.05 270);
+
+  /* ── Semantic tokens ── */
+  --primary:              var(--orange);
+  --primary-foreground:   oklch(1 0 0);
+  --secondary:            var(--teal);
+  --secondary-foreground: oklch(1 0 0);
+  --background:           oklch(0.99 0 0);
+  --foreground:           var(--navy);
+  --card:                 oklch(1 0 0);
+  --card-foreground:      var(--navy);
+  --popover:              oklch(1 0 0);
+  --popover-foreground:   var(--navy);
+  --muted:                var(--teal-light);
+  --muted-foreground:     var(--navy-mid);
+  --accent:               var(--orange-light);
+  --accent-foreground:    var(--orange-dark);
+  --destructive:          oklch(0.55 0.20 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border:               oklch(0.90 0.02 210);
+  --input:                oklch(0.96 0.02 210);
+  --ring:                 var(--orange);
+
+  --chart-1: var(--orange);
+  --chart-2: var(--teal);
+  --chart-3: oklch(0.65 0.15 145);
+  --chart-4: oklch(0.65 0.15 300);
+  --chart-5: oklch(0.65 0.15 60);
+
+  --sidebar:                    var(--navy);
+  --sidebar-foreground:         oklch(0.95 0 0);
+  --sidebar-primary:            var(--orange);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent:             oklch(0.25 0.06 270);
+  --sidebar-accent-foreground:  oklch(0.90 0 0);
+  --sidebar-border:             oklch(0.28 0.06 270);
+  --sidebar-ring:               var(--orange);
+}
 
 @layer base {
   * {
@@ -94,11 +105,12 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
+    font-family: "Poppins", sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Space Grotesk", sans-serif;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: "Nunito", sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.01em;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -108,85 +120,197 @@
   }
 }
 
-/* ─── Brutalista utilities ─────────────────────────────────────────────────── */
-.brutalista-heading {
-  font-family: "Space Grotesk", sans-serif;
+/* ─── Evolutio utilities ──────────────────────────────────────────────────── */
+
+/* Pill button */
+.btn-pill {
+  border-radius: 50px;
+  font-family: "Poppins", sans-serif;
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  padding: 0.65rem 1.75rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.brutalista-label {
-  font-family: "Space Mono", monospace;
-  font-size: 0.65rem;
-  font-weight: 400;
+.btn-orange {
+  background: var(--orange);
+  color: white;
+  box-shadow: 0 4px 15px oklch(0.68 0.19 40 / 0.35);
+}
+.btn-orange:hover {
+  background: var(--orange-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px oklch(0.68 0.19 40 / 0.45);
+}
+
+.btn-teal {
+  background: var(--teal);
+  color: white;
+  box-shadow: 0 4px 15px oklch(0.68 0.13 210 / 0.35);
+}
+.btn-teal:hover {
+  background: var(--teal-dark);
+  transform: translateY(-2px);
+}
+
+.btn-outline-orange {
+  background: transparent;
+  color: var(--orange);
+  border: 2px solid var(--orange);
+}
+.btn-outline-orange:hover {
+  background: var(--orange);
+  color: white;
+}
+
+/* Card Evolutio */
+.evo-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 24px oklch(0.18 0.06 270 / 0.08);
+  transition: all 0.25s ease;
+  border: 1px solid oklch(0.93 0.02 210);
+}
+.evo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px oklch(0.18 0.06 270 / 0.14);
+}
+
+/* Icon circle */
+.evo-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.evo-icon-orange { background: oklch(0.68 0.19 40 / 0.12); color: var(--orange); }
+.evo-icon-teal   { background: oklch(0.68 0.13 210 / 0.12); color: var(--teal); }
+.evo-icon-green  { background: oklch(0.65 0.15 145 / 0.12); color: oklch(0.55 0.15 145); }
+.evo-icon-purple { background: oklch(0.65 0.15 300 / 0.12); color: oklch(0.55 0.15 300); }
+
+/* Section label */
+.evo-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: oklch(0.55 0 0);
+  color: var(--orange);
 }
 
-.brutalista-tag {
-  font-family: "Space Mono", monospace;
-  font-size: 0.6rem;
+/* Badge */
+.evo-badge {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 2px 8px;
-  border: 1px solid oklch(0.30 0 0);
-  background: oklch(0.18 0 0);
-  color: oklch(0.75 0 0);
+  padding: 3px 10px;
+  border-radius: 50px;
   display: inline-block;
 }
+.evo-badge-orange { background: oklch(0.68 0.19 40 / 0.12); color: var(--orange-dark); }
+.evo-badge-teal   { background: oklch(0.68 0.13 210 / 0.12); color: var(--teal-dark); }
+.evo-badge-green  { background: oklch(0.65 0.15 145 / 0.12); color: oklch(0.45 0.15 145); }
+.evo-badge-red    { background: oklch(0.55 0.20 25 / 0.12); color: oklch(0.45 0.20 25); }
+.evo-badge-gray   { background: oklch(0.93 0 0); color: oklch(0.45 0 0); }
 
-.status-pending { color: oklch(0.72 0.12 80); }
-.status-processing { color: oklch(0.72 0.12 220); }
-.status-processed { color: oklch(0.72 0.12 145); }
-.status-error { color: oklch(0.70 0.18 25); }
-
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: oklch(0.12 0 0); }
-::-webkit-scrollbar-thumb { background: oklch(0.28 0 0); }
-::-webkit-scrollbar-thumb:hover { background: oklch(0.40 0 0); }
-
-@layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
-  .container {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
-    padding-right: 1rem;
-  }
-
-  .flex {
-    min-height: 0;
-    min-width: 0;
-  }
-
-  @media (min-width: 640px) {
-    .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
-      padding-right: 1.5rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .container {
-      padding-left: 2rem; /* 32px - desktop padding */
-      padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
-    }
-  }
+/* Status badges */
+.status-pending {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 50px;
+  display: inline-block;
+  background: oklch(0.93 0 0);
+  color: oklch(0.45 0 0);
 }
+.status-processing {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 50px;
+  display: inline-block;
+  background: oklch(0.68 0.13 210 / 0.12);
+  color: var(--teal-dark);
+}
+.status-processed {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 50px;
+  display: inline-block;
+  background: oklch(0.65 0.15 145 / 0.12);
+  color: oklch(0.45 0.15 145);
+}
+.status-error {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 50px;
+  display: inline-block;
+  background: oklch(0.55 0.20 25 / 0.12);
+  color: oklch(0.45 0.20 25);
+}
+
+/* Wave divider */
+.wave-top {
+  position: relative;
+  margin-top: -2px;
+}
+.wave-bottom {
+  position: relative;
+  margin-bottom: -2px;
+}
+
+/* Nav bar */
+.evo-nav {
+  background: var(--navy);
+  color: white;
+}
+
+/* Section backgrounds */
+.bg-teal-section { background: var(--teal-light); }
+.bg-orange-section { background: var(--orange-light); }
+
+/* Step circle */
+.evo-step {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: white;
+  font-family: "Nunito", sans-serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--teal-light); }
+::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--teal-dark); }

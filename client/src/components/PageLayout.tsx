@@ -10,58 +10,102 @@ interface PageLayoutProps {
   backLabel?: string;
   actions?: React.ReactNode;
   children: React.ReactNode;
+  headerColor?: "navy" | "orange" | "teal";
 }
 
-export default function PageLayout({ title, subtitle, backHref, backLabel, actions, children }: PageLayoutProps) {
+export default function PageLayout({ title, subtitle, backHref, backLabel, actions, children, headerColor = "navy" }: PageLayoutProps) {
   const { user, isAuthenticated } = useAuth();
 
+  const headerBg = {
+    navy: "oklch(0.18 0.06 270)",
+    orange: "oklch(0.68 0.19 40)",
+    teal: "oklch(0.68 0.13 210)",
+  }[headerColor];
+
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
-      {/* Top Nav */}
-      <nav className="border-b border-border px-8 py-4 flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-7 h-7 bg-foreground flex items-center justify-center">
-              <span className="text-background font-mono font-bold text-xs">EA</span>
-            </div>
-          </Link>
-          <span className="text-border">|</span>
-          <Link href="/knowledge" className="brutalista-label hover:text-foreground transition-colors">Base</Link>
-          <Link href="/companies" className="brutalista-label hover:text-foreground transition-colors">Empresas</Link>
-          <Link href="/drafts" className="brutalista-label hover:text-foreground transition-colors">Redactor</Link>
-          {isAuthenticated && <Link href="/admin" className="brutalista-label hover:text-foreground transition-colors">Admin</Link>}
-        </div>
+    <div className="min-h-screen flex flex-col" style={{ fontFamily: "'Poppins', sans-serif", background: "#f8fafc" }}>
+
+      {/* ── NAV ── */}
+      <nav style={{ background: "oklch(0.18 0.06 270)", color: "white" }} className="px-6 py-3 flex items-center justify-between sticky top-0 z-50 shadow-lg">
         <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-xs" style={{ background: "oklch(0.68 0.19 40)", color: "white" }}>
+              EA
+            </div>
+            <span className="font-bold text-white text-sm hidden sm:block">Estatutos AI</span>
+          </Link>
+          <span className="text-white/20 hidden md:block">|</span>
+          <div className="hidden md:flex items-center gap-1">
+            {[
+              { label: "Base", href: "/knowledge" },
+              { label: "Empresas", href: "/companies" },
+              { label: "Redactor", href: "/drafts" },
+            ].map(item => (
+              <Link key={item.href} href={item.href}
+                className="px-3 py-1.5 rounded-lg text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 transition-all">
+                {item.label}
+              </Link>
+            ))}
+            {isAuthenticated && (
+              <Link href="/admin"
+                className="px-3 py-1.5 rounded-lg text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 transition-all">
+                Admin
+              </Link>
+            )}
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
           {isAuthenticated ? (
-            <span className="brutalista-label text-foreground">{user?.name}</span>
+            <span className="text-white/70 text-sm font-medium">{user?.name}</span>
           ) : (
-            <a href={getLoginUrl()} className="bg-foreground text-background px-3 py-1.5 font-mono text-xs tracking-widest uppercase hover:bg-muted-foreground transition-colors">
+            <a href={getLoginUrl()} className="btn-pill btn-orange text-xs py-1.5 px-4">
               Ingresar
             </a>
           )}
         </div>
       </nav>
 
-      {/* Page Header */}
-      <header className="border-b border-border px-8 py-8 shrink-0">
-        {backHref && (
-          <Link href={backHref} className="flex items-center gap-2 brutalista-label hover:text-foreground transition-colors mb-4">
-            <ArrowLeft size={12} /> {backLabel ?? "Volver"}
-          </Link>
-        )}
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <h1 className="brutalista-heading text-4xl md:text-5xl text-foreground">{title}</h1>
-            {subtitle && <p className="brutalista-label mt-2">{subtitle}</p>}
+      {/* ── PAGE HEADER ── */}
+      <header style={{ background: headerBg }} className="px-6 pt-8 pb-0 relative overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          {backHref && (
+            <Link href={backHref}
+              className="inline-flex items-center gap-2 text-white/60 hover:text-white text-sm font-medium mb-4 transition-colors">
+              <ArrowLeft size={14} /> {backLabel ?? "Volver"}
+            </Link>
+          )}
+          <div className="flex items-end justify-between gap-4 pb-8">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-black text-white leading-tight" style={{ fontFamily: "'Nunito', sans-serif" }}>
+                {title}
+              </h1>
+              {subtitle && <p className="text-white/60 text-sm mt-1 font-medium">{subtitle}</p>}
+            </div>
+            {actions && <div className="flex items-center gap-3 shrink-0">{actions}</div>}
           </div>
-          {actions && <div className="flex items-center gap-3 shrink-0">{actions}</div>}
         </div>
+        {/* Wave */}
+        <svg viewBox="0 0 1440 40" className="w-full block" style={{ marginBottom: "-2px" }} preserveAspectRatio="none">
+          <path d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z" fill="#f8fafc" />
+        </svg>
       </header>
 
-      {/* Content */}
+      {/* ── CONTENT ── */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {children}
       </div>
+
+      {/* ── FOOTER ── */}
+      <footer style={{ background: "oklch(0.18 0.06 270)", color: "white" }} className="px-6 py-5 mt-auto">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded flex items-center justify-center font-black text-xs" style={{ background: "oklch(0.68 0.19 40)" }}>
+              EA
+            </div>
+            <span className="text-white/50 text-xs">Estatutos AI — {new Date().getFullYear()}</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
