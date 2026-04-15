@@ -2,7 +2,7 @@ import { z } from "zod";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
 import {
   getCompanies, getCompanyById, updateCompanyStatus,
@@ -239,7 +239,7 @@ export const appRouter = router({
 
   // ─── Admin ────────────────────────────────────────────────────────────────────
   admin: router({
-    stats: protectedProcedure.query(async () => {
+    stats: adminProcedure.query(async () => {
       const docStats = await getDocumentStats();
       const kbStats = await getKnowledgeBaseStats();
       return {
@@ -253,14 +253,14 @@ export const appRouter = router({
       };
     }),
 
-    recentJobs: protectedProcedure.query(async () => {
+    recentJobs: adminProcedure.query(async () => {
       const { items } = await getCompanies({ limit: 20, offset: 0 });
       // Return recent documents with status
       const docs = await getPendingDocuments(20);
       return docs;
     }),
 
-    syncDrive: protectedProcedure
+    syncDrive: adminProcedure
       .input(z.object({ limit: z.number().default(100) }))
       .mutation(async ({ input, ctx }) => {
         const jobId = await createSyncJob(ctx.user!.id);
@@ -303,7 +303,7 @@ export const appRouter = router({
         return { jobId, queued, message: `Sincronización iniciada` };
       }),
 
-    processNext: protectedProcedure.mutation(async () => {
+    processNext: adminProcedure.mutation(async () => {
       const [doc] = await getPendingDocuments(1);
       if (!doc) return { message: "No hay documentos pendientes" };
 
@@ -340,7 +340,7 @@ export const appRouter = router({
       }
     }),
 
-    processAll: protectedProcedure
+    processAll: adminProcedure
       .input(z.object({ batchSize: z.number().default(10) }))
       .mutation(async ({ input }) => {
         const docs = await getPendingDocuments(input.batchSize);

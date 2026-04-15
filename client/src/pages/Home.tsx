@@ -30,12 +30,13 @@ export default function Home() {
               {item.label}
             </Link>
           ))}
-          {isAuthenticated ? (
+          {user?.role === 'admin' && (
             <Link href="/admin"
               className="ml-2 px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition-all">
               Admin
             </Link>
-          ) : (
+          )}
+          {!isAuthenticated && (
             <a href={getLoginUrl()}
               className="ml-2 btn-pill btn-orange text-sm">
               Ingresar

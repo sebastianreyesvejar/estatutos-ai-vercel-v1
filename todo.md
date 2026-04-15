@@ -38,3 +38,6 @@
 - [x] Página DraftDetail con editor de objeto social y estatuto completo
 - [x] Página Admin con panel de control y sincronización
 - [x] Acciones de admin: sincronizar Drive, procesar siguiente, procesar lote
+
+## Seguridad
+- [x] Restringir vista Admin solo al usuario owner (role=admin en DB y verificación en frontend/backend)

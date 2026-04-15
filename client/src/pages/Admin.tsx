@@ -10,8 +10,9 @@ export default function Admin() {
   const { isAuthenticated, user } = useAuth();
   const [syncLimit, setSyncLimit] = useState(50);
 
-  const { data: stats, refetch: refetchStats, isLoading: statsLoading } = trpc.admin.stats.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: jobs, refetch: refetchJobs } = trpc.admin.recentJobs.useQuery(undefined, { enabled: isAuthenticated, refetchInterval: 5000 });
+  const isAdmin = user?.role === 'admin';
+  const { data: stats, refetch: refetchStats, isLoading: statsLoading } = trpc.admin.stats.useQuery(undefined, { enabled: isAdmin });
+  const { data: jobs, refetch: refetchJobs } = trpc.admin.recentJobs.useQuery(undefined, { enabled: isAdmin, refetchInterval: 5000 });
 
   const syncMutation = trpc.admin.syncDrive.useMutation({
     onSuccess: (d) => { toast.success(`Sincronización iniciada: ${d.queued} documentos en cola`); refetchStats(); refetchJobs(); },
@@ -40,6 +41,22 @@ export default function Admin() {
             <a href={getLoginUrl()} className="btn-pill btn-orange inline-flex items-center gap-2">
               Iniciar Sesión
             </a>
+          </div>
+        </div>
+      </PageLayout>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <PageLayout title="Administración" subtitle="Acceso restringido" headerColor="orange">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ background: "oklch(0.55 0.20 25 / 0.1)" }}>
+              <AlertCircle size={28} style={{ color: "oklch(0.55 0.20 25)" }} />
+            </div>
+            <p className="font-bold text-lg mb-2" style={{ color: "oklch(0.18 0.06 270)" }}>Acceso denegado</p>
+            <p className="text-gray-400 text-sm">Esta sección está reservada para administradores del sistema.</p>
           </div>
         </div>
       </PageLayout>

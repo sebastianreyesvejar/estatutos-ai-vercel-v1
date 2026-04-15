@@ -46,7 +46,7 @@ export default function PageLayout({ title, subtitle, backHref, backLabel, actio
                 {item.label}
               </Link>
             ))}
-            {isAuthenticated && (
+            {user?.role === 'admin' && (
               <Link href="/admin"
                 className="px-3 py-1.5 rounded-lg text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 transition-all">
                 Admin
