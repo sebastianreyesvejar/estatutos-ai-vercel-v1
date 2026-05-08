@@ -1,6 +1,6 @@
 import { createConnection } from 'mysql2/promise';
 
-const conn = await createConnection(process.env.DATABASE_URL);
+const conn = await createConnection(process.env.MYSQL_PUBLIC_URL || process.env.DATABASE_URL);
 
 const statements = [
   `CREATE TABLE IF NOT EXISTS \`social_objects\` (
