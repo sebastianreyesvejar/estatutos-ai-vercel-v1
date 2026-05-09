@@ -21,7 +21,7 @@ export function registerOAuthRoutes(app: Express) {
         email: null,
         loginMethod: "password",
         lastSignedIn: new Date(),
-        role: "admin",
+        role: "owner",
       });
 
       const sessionToken = await sdk.signSession(
